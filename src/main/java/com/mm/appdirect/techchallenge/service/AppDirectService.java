@@ -20,8 +20,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class AppDirectService {
-	private static final String consumerKey = "appdirecttechchallenge-145291";
-	private static final String secret = "jDfOKWSS7ENliNYP";
+	private static final String consumerKey = "appdirecttechchallenge1-145423";
+	private static final String secret = "Bqtfobhh1fAYK6mV";
 
 	private static OAuthConsumer consumer = new DefaultOAuthConsumer(consumerKey, secret);
 

@@ -26,8 +26,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
-	private static final String consumerKey = "appdirecttechchallenge-145291";
-	private static final String secret = "jDfOKWSS7ENliNYP";
+	private static final String consumerKey = "appdirecttechchallenge1-145423";
+	private static final String secret = "Bqtfobhh1fAYK6mV";
 	
 	@Override
     protected void configure(final HttpSecurity http) throws Exception {

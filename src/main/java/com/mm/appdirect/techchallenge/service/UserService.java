@@ -44,7 +44,7 @@ public class UserService {
 		EventResult result = new EventResult();
 		if (organization == null) {
 			result.setErrorCode(ErrorCodes.ACCOUNT_NOT_FOUND.toString());
-			result.setStatus(Boolean.FALSE.toString());
+			result.setSuccess(false);
 			result.setMessage("Account not found");
 		} else {
 			User user = convertToUser(assignedUser);
@@ -59,7 +59,7 @@ public class UserService {
 
 			result = new EventResult();
 			result.setAccountIdentifier(user.getId().toString());
-			result.setStatus(Boolean.TRUE.toString());
+			result.setSuccess(true);
 		}
 		return result;
 	}
@@ -72,13 +72,13 @@ public class UserService {
 		EventResult result = new EventResult();
 		if (existingUser != null) {
 			result.setAccountIdentifier(existingUser.getId().toString());
-			result.setStatus(Boolean.TRUE.toString());
+			result.setSuccess(true);
 			existingUser.setStatus(User.Status.DISABLED);
 			existingUser = userRepo.save(existingUser);
 			result.setMessage("User subscription disabled successfully");
 		} else {
 			result.setErrorCode(ErrorCodes.USER_NOT_FOUND.toString());
-			result.setStatus(Boolean.FALSE.toString());
+			result.setSuccess(false);
 			result.setMessage("User subscription does not exist");
 		}
 

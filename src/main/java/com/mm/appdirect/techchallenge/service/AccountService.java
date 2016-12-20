@@ -35,7 +35,7 @@ public class AccountService {
     	organization = organizationRepo.save(organization);    	
     	EventResult result = new EventResult();
     	result.setAccountIdentifier(organization.getId().toString());
-    	result.setStatus(Boolean.TRUE.toString());
+    	result.setSuccess(true);
     	//result.setMessage("Account created");
 		return result;
 	}
@@ -57,7 +57,7 @@ public class AccountService {
     	EventResult result = new EventResult();
     	if(existingOrg != null){
         	result.setAccountIdentifier(existingOrg.getId().toString());
-        	result.setStatus(Boolean.TRUE.toString());
+        	result.setSuccess(Boolean.TRUE.booleanValue());
         	result.setMessage("Account disabled");
         	existingOrg.setStatus(Account.Status.DISABLED);
         	existingOrg = organizationRepo.save(existingOrg);
@@ -65,7 +65,7 @@ public class AccountService {
         	result.setMessage("Subscription disabled successfully");
     	} else {
     		result.setErrorCode(ErrorCodes.ACCOUNT_NOT_FOUND.toString());
-    		result.setStatus(Boolean.FALSE.toString());
+    		result.setSuccess(Boolean.FALSE.booleanValue());
     		result.setMessage("Subscription does not exist");
     	}
     	return result;

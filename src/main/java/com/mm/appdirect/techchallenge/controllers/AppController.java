@@ -30,19 +30,10 @@ public class AppController {
         return accountSvc.findAccountById(accountid);
     }
     
-    @RequestMapping("/accounts/{id}/users")
+    @RequestMapping("/accounts/{accountid}/users")
     public List<User> getAccountUsers(@PathVariable(name="accountid") String accountid) {
     	Account account = accountSvc.findAccountById(accountid);
     	return account.getUsers();
     }
-//    @RequestMapping("/customers")
-//    public @ResponseBody Page<User> getAllCustomers(Pageable p) {
-//        return customerSvc.getAll(p);
-//    }
-    
-    
-    
-    
-    
-    
+
 }

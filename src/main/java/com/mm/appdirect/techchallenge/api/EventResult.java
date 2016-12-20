@@ -1,26 +1,17 @@
 package com.mm.appdirect.techchallenge.api;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) 
-@XmlRootElement(name = "result")
-@XmlAccessorType(value = XmlAccessType.FIELD)
+//@XmlRootElement(name = "result")
+//@XmlAccessorType(value = XmlAccessType.FIELD)
 public class EventResult {
-	private String status;
+	private boolean success;
 	private String accountIdentifier;
 	private String errorCode;
 	private String message;
 	
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
+	
 	public String getAccountIdentifier() {
 		return accountIdentifier;
 	}
@@ -39,6 +30,13 @@ public class EventResult {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	public boolean isSuccess() {
+		return success;
+	}
+	public void setSuccess(boolean success) {
+		this.success = success;
 	}
 	
 }
