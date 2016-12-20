@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-public class CustomProtectedResourceProcessingFilter extends ProtectedResourceProcessingFilter {
+public class OAuthProtectedResourceProcessingFilter extends ProtectedResourceProcessingFilter {
 
     Logger log = LoggerFactory.getLogger(ProtectedResourceProcessingFilter.class);
 
     private List<RequestMatcher> requestMatchers;
 
-    public CustomProtectedResourceProcessingFilter(List<RequestMatcher> requestMatchers) {
+    public OAuthProtectedResourceProcessingFilter(List<RequestMatcher> requestMatchers) {
         this.requestMatchers = requestMatchers;
     }
 

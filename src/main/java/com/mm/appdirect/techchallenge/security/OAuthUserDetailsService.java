@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 
-public class CustomUserDetailsService implements AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
+public class OAuthUserDetailsService implements AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 
     @Override
     public UserDetails loadUserDetails(final OpenIDAuthenticationToken token) throws UsernameNotFoundException {
