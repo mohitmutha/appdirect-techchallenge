@@ -8,7 +8,13 @@ The following notifications are integrated
 
 Open id authentication with AppDirect is also implemented
 
-The following protected endpoints are accessible after authentication
+*The following are the notification end points*
+GET /appdirect/subscription/create?url={url}
+GET /appdirect/subscription/cancel?url={url}
+GET /appdirect/user/assign?url={url}
+GET /appdirect/user/unassign?url={url}
+
+*The following protected endpoints are accessible after authentication*
 GET /accounts
 GET /accounts/{id}
 GET /accounts/{id}/users

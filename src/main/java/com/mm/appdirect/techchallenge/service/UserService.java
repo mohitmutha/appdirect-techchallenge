@@ -1,10 +1,10 @@
 package com.mm.appdirect.techchallenge.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.mm.appdirect.techchallenge.api.EventResult;
@@ -24,8 +24,8 @@ public class UserService extends BaseService{
   @Autowired
   private AccountService accountSvc;
 
-  public Page<User> getAll(Pageable p) {
-    return userRepo.findAll(p);
+  public List<User> findByAccount(Account account) {
+    return userRepo.findByAccount(account);
   }
 
   public EventResult processAssignment(UserAssignEvent event) {
@@ -62,13 +62,13 @@ public class UserService extends BaseService{
 
       if (existingUser != null) {
         user.setId(existingUser.getId());
-        user.setCompany(organization);
+        
       }
+      user.setAccount(organization);
       user.setStatus(User.Status.ACTIVE);
       user = userRepo.save(user);
 
       result = new EventResult();
-      result.setAccountIdentifier(user.getId().toString());
       result.setSuccess(true);
     }
     return result;

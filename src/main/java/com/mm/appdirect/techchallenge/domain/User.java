@@ -27,8 +27,8 @@ public class User {
     private String locale;
     private Status status; 
     @ManyToOne
-	@JoinColumn(name = "organizationId")
-    private Account company;
+	@JoinColumn(name = "account_id")
+    private Account account;
     
     public User() {}
 
@@ -118,14 +118,14 @@ public class User {
 
 
 	
-	public Account getCompany() {
-		return company;
+	public Account getAccount() {
+		return account;
 	}
 
 
 
-	public void setCompany(Account company) {
-		this.company = company;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 }

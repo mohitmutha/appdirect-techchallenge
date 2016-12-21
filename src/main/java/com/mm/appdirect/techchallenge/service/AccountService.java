@@ -7,22 +7,29 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import com.google.inject.Stage;
 import com.mm.appdirect.techchallenge.api.EventResult;
 import com.mm.appdirect.techchallenge.api.event.Company;
+import com.mm.appdirect.techchallenge.api.event.Creator;
 import com.mm.appdirect.techchallenge.api.event.ErrorCodes;
 import com.mm.appdirect.techchallenge.api.event.SubscriptionCancelEvent;
 import com.mm.appdirect.techchallenge.api.event.SubscriptionEvent;
 import com.mm.appdirect.techchallenge.domain.Account;
+import com.mm.appdirect.techchallenge.domain.Account.Status;
 import com.mm.appdirect.techchallenge.domain.AccountRepository;
+import com.mm.appdirect.techchallenge.domain.User;
+import com.mm.appdirect.techchallenge.domain.UserRepository;
 
 @Component
 public class AccountService extends BaseService{
   @Autowired
-  private AccountRepository organizationRepo;
+  private AccountRepository accountRepo;
+  @Autowired
+  private UserRepository userRepo;
   private Logger logger = LoggerFactory.getLogger(AccountService.class);
 
   public Page<Account> getAll(Pageable p) {
-    return organizationRepo.findAll(p);
+    return accountRepo.findAll(p);
   }
 
   public EventResult processNewSubscription(SubscriptionEvent event) {
@@ -36,19 +43,31 @@ public class AccountService extends BaseService{
     }
 
     Company company = event.getPayload().getCompany();
-    Account organization = convertCompany(company);
-    Account existingOrg = organizationRepo.findByUuid(organization.getUuid());
-
+    Account account = convertCompany(company);
+    User user = convertCreator(event.getCreator());
+    
+    Account existingOrg = accountRepo.findByUuid(account.getUuid());
+    User existingUser = userRepo.findByUuid(user.getUuid());
+    
     if (existingOrg != null) {
-      organization.setId(existingOrg.getId());
+      account.setId(existingOrg.getId());
     }
-    organization = organizationRepo.save(organization);
+    if(existingUser != null){
+      user.setId(existingUser.getId());
+    }
+    account.setStatus(Status.ACTIVE);
+    user.setStatus(User.Status.ACTIVE);
+    account = accountRepo.save(account);
+    user.setAccount(account);
+    user = userRepo.save(user);
     result = new EventResult();
-    result.setAccountIdentifier(organization.getId().toString());
+    result.setAccountIdentifier(account.getId().toString());
     result.setSuccess(true);
     result.setMessage("Account created");
     return result;
   }
+
+  
 
   public EventResult processCancelSubscription(SubscriptionCancelEvent event) {
     EventResult result = new EventResult();
@@ -79,7 +98,7 @@ public class AccountService extends BaseService{
       result.setSuccess(Boolean.TRUE.booleanValue());
       result.setMessage("Account disabled");
       existingOrg.setStatus(Account.Status.DISABLED);
-      existingOrg = organizationRepo.save(existingOrg);
+      existingOrg = accountRepo.save(existingOrg);
       // TODO Disable all users also??
       result.setMessage("Subscription disabled successfully");
     } else {
@@ -92,7 +111,7 @@ public class AccountService extends BaseService{
 
   public Account findAccountById(String accountId) {
     Long convertedId = Long.parseLong(accountId);
-    return organizationRepo.findOne(convertedId);
+    return accountRepo.findOne(convertedId);
   }
 
   private Account convertCompany(Company company) {
@@ -104,5 +123,15 @@ public class AccountService extends BaseService{
     org.setWebsite(company.getWebsite());
     return org;
   }
-
+  
+  private User convertCreator(Creator creator) {
+    User user = new User();
+    user.setEmail(creator.getEmail());
+    user.setFirstName(creator.getFirstName());
+    user.setLastName(creator.getLastName());
+    user.setLocale(creator.getLocale());
+    user.setOpenId(creator.getOpenId());
+    user.setUuid(creator.getUuid());
+    return user;
+  }
 }

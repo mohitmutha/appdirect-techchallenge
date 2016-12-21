@@ -6,8 +6,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
-
-    List<User> findByLastName(String lastName);
-
 	User findByUuid(String uuid);
+	List<User> findByAccount(Account account);
 }

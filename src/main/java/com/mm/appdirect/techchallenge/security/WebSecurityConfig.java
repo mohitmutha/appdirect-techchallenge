@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(final HttpSecurity http) throws Exception {
     http.headers().frameOptions().disable();
     http.csrf().disable();
-    http.authorizeRequests().antMatchers("/appdirect/**", "/test/**").permitAll().anyRequest().authenticated();
+    http.authorizeRequests().antMatchers("/appdirect/**", "/**").permitAll().anyRequest().authenticated();
     http.openidLogin().permitAll().authenticationUserDetailsService(new OAuthUserDetailsService())
         .defaultSuccessUrl("/accounts").attributeExchange("https://www.appdirect.com.*").attribute("email")
         .type("http://axschema.org/contact/email").required(true).and().attribute("firstname")

@@ -26,7 +26,7 @@ public class Account {
   private String uuid;
   private String website;
   private Status status;
-  @OneToMany(targetEntity = User.class, mappedBy = "company", fetch = FetchType.LAZY)
+  @OneToMany(targetEntity = User.class, mappedBy = "account", fetch = FetchType.LAZY)
   private List<User> users;
 
   public Long getId() {

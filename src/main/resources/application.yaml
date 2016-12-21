@@ -1,3 +1,7 @@
 appdirect:
   key: appdirecttechchallenge-145458
   secret: IQM1nxhEH8hgh1hA
+spring:
+  h2:
+    console:
+      enabled: true
