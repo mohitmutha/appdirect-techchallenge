@@ -27,7 +27,7 @@ public class AccountService extends BaseService{
 
   public EventResult processNewSubscription(SubscriptionEvent event) {
     EventResult result = new EventResult();
-    if (event == null || event.getPayload() == null || event.getPayload().getCompany() == null) {
+    if (event == null || event.getPayload() == null || event.getPayload().getCompany() == null || event.getPayload().getCompany().getUuid() == null) {
       logger.error("Invalid event input received. Company identifier not found.");
       result.setErrorCode(ErrorCodes.ACCOUNT_NOT_FOUND.toString());
       result.setSuccess(false);
