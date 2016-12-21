@@ -20,3 +20,5 @@ Requirements for building the application
 - Java 8
 - Maven (3.x)
 - Docker (optional)
+
+*Test are not implemented*
