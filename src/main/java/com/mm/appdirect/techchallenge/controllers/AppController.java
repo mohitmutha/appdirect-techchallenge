@@ -16,24 +16,24 @@ import com.mm.appdirect.techchallenge.service.AccountService;
 
 @RestController
 public class AppController {
-    
-	@Autowired
-	private AccountService accountSvc;
-    
-    @RequestMapping("/accounts")
-    public @ResponseBody Page<Account> getAccounts(Pageable page) {
-        return accountSvc.getAll(page);
-    }
-    
-    @RequestMapping("/accounts/{accountid}")
-    public Account getAccount(@PathVariable(name="accountid") String accountid) {
-        return accountSvc.findAccountById(accountid);
-    }
-    
-    @RequestMapping("/accounts/{accountid}/users")
-    public List<User> getAccountUsers(@PathVariable(name="accountid") String accountid) {
-    	Account account = accountSvc.findAccountById(accountid);
-    	return account.getUsers();
-    }
+
+  @Autowired
+  private AccountService accountSvc;
+
+  @RequestMapping("/accounts")
+  public @ResponseBody Page<Account> getAccounts(Pageable page) {
+    return accountSvc.getAll(page);
+  }
+
+  @RequestMapping("/accounts/{accountid}")
+  public Account getAccount(@PathVariable(name = "accountid") String accountid) {
+    return accountSvc.findAccountById(accountid);
+  }
+
+  @RequestMapping("/accounts/{accountid}/users")
+  public List<User> getAccountUsers(@PathVariable(name = "accountid") String accountid) {
+    Account account = accountSvc.findAccountById(accountid);
+    return account.getUsers();
+  }
 
 }

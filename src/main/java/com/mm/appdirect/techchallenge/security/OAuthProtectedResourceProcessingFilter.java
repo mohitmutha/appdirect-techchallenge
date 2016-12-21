@@ -13,30 +13,31 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 public class OAuthProtectedResourceProcessingFilter extends ProtectedResourceProcessingFilter {
 
-    Logger log = LoggerFactory.getLogger(ProtectedResourceProcessingFilter.class);
+  Logger log = LoggerFactory.getLogger(ProtectedResourceProcessingFilter.class);
 
-    private List<RequestMatcher> requestMatchers;
+  private List<RequestMatcher> requestMatchers;
 
-    public OAuthProtectedResourceProcessingFilter(List<RequestMatcher> requestMatchers) {
-        this.requestMatchers = requestMatchers;
-    }
+  public OAuthProtectedResourceProcessingFilter(List<RequestMatcher> requestMatchers) {
+    this.requestMatchers = requestMatchers;
+  }
 
-    @Override
-    protected boolean requiresAuthentication(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) {
+  @Override
+  protected boolean requiresAuthentication(final HttpServletRequest request, final HttpServletResponse response,
+      final FilterChain filterChain) {
 
-        boolean matches = false;
+    boolean matches = false;
 
-        if (requestMatchers != null && !requestMatchers.isEmpty()) {
-            for (RequestMatcher requestMatcher : requestMatchers) {
-                if (requestMatcher.matches(request)) {
-                    matches = true;
-                    break;
-                }
-            }
-
-            log.debug("matches = " + matches);
+    if (requestMatchers != null && !requestMatchers.isEmpty()) {
+      for (RequestMatcher requestMatcher : requestMatchers) {
+        if (requestMatcher.matches(request)) {
+          matches = true;
+          break;
         }
+      }
 
-        return matches;
+      log.debug("matches = " + matches);
     }
+
+    return matches;
+  }
 }

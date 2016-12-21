@@ -9,8 +9,8 @@ import org.springframework.security.openid.OpenIDAuthenticationToken;
 
 public class OAuthUserDetailsService implements AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 
-    @Override
-    public UserDetails loadUserDetails(final OpenIDAuthenticationToken token) throws UsernameNotFoundException {
-        return new User(token.getName(), "", AuthorityUtils.createAuthorityList("ROLE_USER"));
-    }
+  @Override
+  public UserDetails loadUserDetails(final OpenIDAuthenticationToken token) throws UsernameNotFoundException {
+    return new User(token.getName(), "", AuthorityUtils.createAuthorityList("ROLE_USER"));
+  }
 }

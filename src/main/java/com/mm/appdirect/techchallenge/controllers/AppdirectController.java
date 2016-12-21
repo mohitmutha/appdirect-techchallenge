@@ -1,14 +1,9 @@
 package com.mm.appdirect.techchallenge.controllers;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 
-import oauth.signpost.exception.OAuthCommunicationException;
-import oauth.signpost.exception.OAuthExpectationFailedException;
-import oauth.signpost.exception.OAuthMessageSignerException;
-
-import org.apache.http.client.ClientProtocolException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth.provider.ConsumerAuthentication;
@@ -17,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mm.appdirect.techchallenge.api.EventResult;
+import com.mm.appdirect.techchallenge.api.event.ErrorCodes;
 import com.mm.appdirect.techchallenge.api.event.SubscriptionCancelEvent;
 import com.mm.appdirect.techchallenge.api.event.SubscriptionEvent;
 import com.mm.appdirect.techchallenge.api.event.UserAssignEvent;
 import com.mm.appdirect.techchallenge.api.event.UserUnassignEvent;
+import com.mm.appdirect.techchallenge.exception.ApplicationException;
 import com.mm.appdirect.techchallenge.service.AccountService;
 import com.mm.appdirect.techchallenge.service.AppDirectService;
 import com.mm.appdirect.techchallenge.service.UserService;
@@ -35,15 +32,25 @@ public class AppdirectController {
 	@Autowired
 	private AppDirectService appDirectSvc;
 	
+	Logger logger = LoggerFactory.getLogger(AppdirectController.class);
+	
 	@RequestMapping(path="/subscription/create")
     public EventResult createSubscription(HttpServletRequest request,
             @RequestParam String url,
-            @AuthenticationPrincipal ConsumerAuthentication authentication) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException, ClientProtocolException, IOException {
-    	System.out.println("Start create Call URL");
-    	SubscriptionEvent event = appDirectSvc.get(url, SubscriptionEvent.class);
-    	System.out.println("Received event");
-    	EventResult result = accountSvc.processNewSubscription(event);
-    	System.out.println("Saving now");
+            @AuthenticationPrincipal ConsumerAuthentication authentication) {
+		logger.debug("Subscription Create with {1}",url);
+		SubscriptionEvent event = null;
+		EventResult result = null;
+		try {
+			event = appDirectSvc.get(url, SubscriptionEvent.class);
+		} catch (ApplicationException e) {
+			result = new EventResult();
+			result.setSuccess(false);
+			result.setMessage(e.getMessage());
+			result.setErrorCode(ErrorCodes.UNKNOWN_ERROR.toString());
+			return result;
+		}
+    	result = accountSvc.processNewSubscription(event);
     	return result;
     }
 	
@@ -52,10 +59,19 @@ public class AppdirectController {
 	@RequestMapping(path="/subscription/cancel")
     public EventResult cancelSubscription(HttpServletRequest request,
             @RequestParam String url,
-            @AuthenticationPrincipal ConsumerAuthentication authentication) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException, ClientProtocolException, IOException {
+            @AuthenticationPrincipal ConsumerAuthentication authentication) {
     	
-    	SubscriptionCancelEvent event = appDirectSvc.get(url, SubscriptionCancelEvent.class);
-    	EventResult result = accountSvc.processCancelSubscription(event);
+    	SubscriptionCancelEvent event = null;
+		EventResult result = null;
+		try {
+			event = appDirectSvc.get(url, SubscriptionCancelEvent.class);
+		} catch (ApplicationException e) {
+			result = new EventResult();
+			result.setSuccess(false);
+			result.setMessage(e.getMessage());
+			result.setErrorCode(ErrorCodes.UNKNOWN_ERROR.toString());
+			return result;
+		}
     	
     	return result;
     }
@@ -63,20 +79,38 @@ public class AppdirectController {
 	@RequestMapping(path="/user/assign")
     public EventResult assignUser(HttpServletRequest request,
             @RequestParam String url,
-            @AuthenticationPrincipal ConsumerAuthentication authentication) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException, ClientProtocolException, IOException {
+            @AuthenticationPrincipal ConsumerAuthentication authentication) {
     	
-    	UserAssignEvent event = appDirectSvc.get(url, UserAssignEvent.class);
-    	EventResult result = userSvc.processAssignment(event);
+    	UserAssignEvent event = null;
+		EventResult result = null;
+		try {
+			event = appDirectSvc.get(url, UserAssignEvent.class);
+		} catch (ApplicationException e) {
+			result = new EventResult();
+			result.setSuccess(false);
+			result.setMessage(e.getMessage());
+			result.setErrorCode(ErrorCodes.UNKNOWN_ERROR.toString());
+			return result;
+		}
     	return result;
     }
 	
 	@RequestMapping(path="/user/unassign")
     public EventResult unassignUser(HttpServletRequest request,
             @RequestParam String url,
-            @AuthenticationPrincipal ConsumerAuthentication authentication) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException, ClientProtocolException, IOException {
+            @AuthenticationPrincipal ConsumerAuthentication authentication) {
     	
-		UserUnassignEvent event = appDirectSvc.get(url, UserUnassignEvent.class);
-		EventResult result = userSvc.processUnassignment(event);
+		UserUnassignEvent event = null;
+		EventResult result = null;
+		try {
+			event = appDirectSvc.get(url, UserUnassignEvent.class);
+		} catch (ApplicationException e) {
+			result = new EventResult();
+			result.setSuccess(false);
+			result.setMessage(e.getMessage());
+			result.setErrorCode(ErrorCodes.UNKNOWN_ERROR.toString());
+			return result;
+		}
 		
     	return result;
     }
