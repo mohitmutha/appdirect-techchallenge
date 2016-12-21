@@ -50,7 +50,7 @@ public class AppdirectController {
 			result.setErrorCode(ErrorCodes.UNKNOWN_ERROR.toString());
 			return result;
 		}
-    	result = accountSvc.processNewSubscription(event);
+		result = accountSvc.processNewSubscription(event);
     	return result;
     }
 	
@@ -65,6 +65,7 @@ public class AppdirectController {
 		EventResult result = null;
 		try {
 			event = appDirectSvc.get(url, SubscriptionCancelEvent.class);
+			
 		} catch (ApplicationException e) {
 			result = new EventResult();
 			result.setSuccess(false);
@@ -72,7 +73,7 @@ public class AppdirectController {
 			result.setErrorCode(ErrorCodes.UNKNOWN_ERROR.toString());
 			return result;
 		}
-    	
+		result = accountSvc.processCancelSubscription(event);
     	return result;
     }
 	
@@ -85,6 +86,7 @@ public class AppdirectController {
 		EventResult result = null;
 		try {
 			event = appDirectSvc.get(url, UserAssignEvent.class);
+			
 		} catch (ApplicationException e) {
 			result = new EventResult();
 			result.setSuccess(false);
@@ -92,6 +94,7 @@ public class AppdirectController {
 			result.setErrorCode(ErrorCodes.UNKNOWN_ERROR.toString());
 			return result;
 		}
+		result = userSvc.processAssignment(event);
     	return result;
     }
 	
@@ -104,6 +107,7 @@ public class AppdirectController {
 		EventResult result = null;
 		try {
 			event = appDirectSvc.get(url, UserUnassignEvent.class);
+			
 		} catch (ApplicationException e) {
 			result = new EventResult();
 			result.setSuccess(false);
@@ -111,7 +115,7 @@ public class AppdirectController {
 			result.setErrorCode(ErrorCodes.UNKNOWN_ERROR.toString());
 			return result;
 		}
-		
+		result = userSvc.processUnassignment(event);
     	return result;
     }
 	
